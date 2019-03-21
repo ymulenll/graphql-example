@@ -18,15 +18,15 @@ const books = [
 const authors = [
   {
     id: 1,
-    firstName: "J.K.",
-    lastName: "Rowling"
+    firstName: 'J.K.',
+    lastName: 'Rowling'
   },
   {
     id: 2,
-    firstName: "Michael",
-    lastName: "Crichton"
+    firstName: 'Michael',
+    lastName: 'Crichton'
   }
-]
+];
 
 const typeDefs = gql`
   type Book {
@@ -37,6 +37,7 @@ const typeDefs = gql`
   }
 
   type Author {
+    id: Int
     firstName: String
     lastName: String
   }
@@ -45,6 +46,7 @@ const typeDefs = gql`
   type Query {
     books: [Book]
     book(id: Int!): Book
+    authors: [Author]
   }
 
   type Mutation {
@@ -56,11 +58,16 @@ const resolvers = {
   Query: {
     books: (parent, args, context, info) => books,
     book: (parent, args, context, info) =>
-      books.find(item => item.id === args.id)
+      books.find(item => item.id === args.id),
+    authors: () => authors
   },
   Mutation: {
     addBook: (parent, { title, authorName }, context, info) => {
-      const newBook = { title, authorName, id: Math.floor(Math.random() * 101) };
+      const newBook = {
+        title,
+        authorName,
+        id: Math.floor(Math.random() * 101)
+      };
 
       books.push(newBook);
 
